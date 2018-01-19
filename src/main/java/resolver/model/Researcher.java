@@ -30,7 +30,6 @@ import java.util.Set;
 @Getter
 @NoArgsConstructor
 @Setter
-@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
 public class Researcher {
 
     @Id
