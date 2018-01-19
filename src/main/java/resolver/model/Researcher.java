@@ -1,8 +1,12 @@
 package resolver.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -25,30 +29,22 @@ import java.util.Set;
 @Entity(name = "researchers")
 @Getter
 @NoArgsConstructor
+@Setter
+@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
 public class Researcher {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(name = "researchers_identities",
-        joinColumns = @JoinColumn(name = "researcher_id", referencedColumnName = "id"),
-        inverseJoinColumns = @JoinColumn(name = "identity_id", referencedColumnName = "id"))
+    @OneToMany(mappedBy = "researcher", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Identity> identities = new HashSet<>();
 
-    @ManyToMany
-    @JoinTable(name = "researchers_parents_children",
-        joinColumns = @JoinColumn(name = "parent_id", referencedColumnName = "id"),
-        inverseJoinColumns = @JoinColumn(name = "child_id", referencedColumnName = "id"))
-    private Set<Researcher> parents = new HashSet<>();
+    @OneToMany(mappedBy = "parent")
+    private Set<ResearcherRelation> parents = new HashSet<>();
 
-    @ManyToMany
-    @JoinTable(name = "researchers_parents_children",
-        joinColumns = @JoinColumn(name = "child_id", referencedColumnName = "id"),
-        inverseJoinColumns = @JoinColumn(name = "parent_id", referencedColumnName = "id"))
-    private Set<Researcher> children = new HashSet<>();
+    @OneToMany(mappedBy = "child")
+    private Set<ResearcherRelation> children = new HashSet<>();
 
     @Column
     @NotNull
@@ -79,4 +75,5 @@ public class Researcher {
 
     @Column
     private Instant updated;
+
 }

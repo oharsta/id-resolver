@@ -18,11 +18,13 @@ public interface ResearcherRepository extends CrudRepository<Researcher, Long> {
     Optional<Researcher> findByOrganisationAndOrganisationUid(String organisation, String organisationUid);
 
     @EntityGraph(value = "findById", type = EntityGraph.EntityGraphType.LOAD,
-        attributePaths = {"parents", "children", "authors"})
+        attributePaths = {"parents.parent", "parents.child", "children.parent", "children.child", "authors"})
     Optional<Researcher> findById(Long id);
 
     @Query("select r from researchers r left outer join r.identities i " +
         "where lower(r.email) like %:term% or lower(r.name) like %:term% " +
-        "or lower(i.identityValue) like %:term% ")
+        "or lower(i.identityValue) like %:term% " +
+        "or lower(r.organisationUid) like %:term% " +
+        "or lower(r.organisation) like %:term% ")
     List<Researcher> findByVarious(@Param("term") String term);
 }

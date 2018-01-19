@@ -1,5 +1,4 @@
-DELETE FROM researchers_identities;
-DELETE FROM researchers_parents_children;
+DELETE FROM researcher_relations;
 DELETE FROM authors;
 DELETE FROM identities;
 DELETE FROM papers;
