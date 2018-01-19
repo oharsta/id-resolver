@@ -1,0 +1,27 @@
+logging:
+  level:
+    org.springframework: WARN
+    org.hibernate.SQL: DEBUG
+
+server:
+  server-header:
+
+security:
+  api_users_config_path: classpath:/id-resolver-api-users.yml
+
+spring:
+  jpa:
+    open-in-view: false
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mysql://localhost/id_resolver?autoReconnect=true&useSSL=false
+    username: root
+    password:
+  main:
+    banner-mode: "off"
+
+# used by the git plugin
+info:
+  build:
+    artifact: "@project.artifactId@"
+    version: "@project.version@"
