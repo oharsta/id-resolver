@@ -1,0 +1,14 @@
+@import "../stylesheets/mixins.scss";
+@import "../stylesheets/forms.scss";
+
+.mod-login {
+    @include page;
+
+    padding: 50px;
+    text-align: center;
+    margin: 50px 100px;
+    background-color: white;
+    box-shadow: 1px 4px 12px 1px $medium-grey;
+    border-radius: $br;
+
+}

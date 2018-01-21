@@ -27,7 +27,7 @@ public class ResearcherControllerTest extends AbstractIntegrationTest {
         given()
             .auth().preemptive().basic("user", "secret")
             .when()
-            .get("resolver/api/researchers/")
+            .get("api/resolver/researchers/")
             .then()
             .statusCode(SC_OK)
             .body("id", hasItems(3));
@@ -38,7 +38,7 @@ public class ResearcherControllerTest extends AbstractIntegrationTest {
         given()
             .auth().preemptive().basic("nope", "secret")
             .when()
-            .get("resolver/api/researchers/")
+            .get("api/resolver/researchers/")
             .then()
             .statusCode(SC_FORBIDDEN);
     }

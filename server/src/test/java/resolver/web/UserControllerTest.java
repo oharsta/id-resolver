@@ -35,7 +35,7 @@ public class UserControllerTest {
     public void encryptPassword() {
         given()
             .when()
-            .get("users/encodePassword/secret")
+            .get("client/users/encodePassword/secret")
             .then()
             .body(startsWith("{bcrypt}$2a$10$"));
     }

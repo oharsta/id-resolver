@@ -27,7 +27,7 @@ import java.util.stream.Stream;
 import static java.util.stream.Collectors.toSet;
 
 @RestController()
-@RequestMapping(path = "/resolver/api")
+@RequestMapping(path = {"/api/resolver", "/client"})
 public class ResearcherController {
 
     @Autowired
