@@ -39,11 +39,9 @@ function validateResponse(showErrorDialog) {
 }
 
 function validFetch(path, options, headers = {}, showErrorDialog = true) {
-    const authorization_header = localStorage.getItem("authorization_header");
     const contentHeaders = {
         "Accept": "application/json",
         "Content-Type": "application/json",
-        "Authorization": authorization_header,
         ...headers
     };
     const fetchOptions = Object.assign({}, {headers: contentHeaders}, options, {

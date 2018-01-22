@@ -13,7 +13,6 @@ export default class Header extends React.PureComponent {
         stop(e);
         const node = document.getElementById("app");
         unmountComponentAtNode(node);
-        localStorage.clear();
         window.location.href = "/";
     };
 
@@ -30,7 +29,7 @@ export default class Header extends React.PureComponent {
         return (
             <p className="welcome-link">
                 <i className="fa fa-user-circle-o"></i>
-                {currentUser.name}
+                {currentUser ? currentUser.name : ""}
             </p>
         );
     }
