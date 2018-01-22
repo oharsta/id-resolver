@@ -1,12 +1,14 @@
-# Valid scopes are mr.api.Scope.values(); =>  ["READ", "WRITE"]
+# Valid scopes are resolver.api.Scope.values(); =>  ["READ", "WRITE"]
 apiUsers:
   - {
       name: "user",
+      organisation: "example.org",
       password: "{bcrypt}$2a$10$VHPTyV2OOsjpYvhOKwjYSOYHC12aoCmk.UVjuAzgW37xkLKQZ3BGi",
       scopes: [READ]
     }
   - {
       name: "admin",
+      organisation: "example.org",
       password: "{bcrypt}$2a$10$r5C2QcGcdWCKsQiQ02tinOOxT9hQBa5smZpoCoTYKkNPSf/4Nh7JS",
       scopes: [READ, WRITE]
     }
