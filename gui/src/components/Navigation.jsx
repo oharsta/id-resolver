@@ -8,6 +8,7 @@ import spin from "../lib/Spin";
 import {NavLink} from "react-router-dom";
 
 import "./Navigation.css";
+import {isEmpty} from "../utils/Utils";
 
 export default class Navigation extends React.PureComponent {
 
@@ -52,12 +53,15 @@ export default class Navigation extends React.PureComponent {
     }
 
     render() {
+        const {currentUser} = this.props;
+        if (isEmpty(currentUser)) {
+            return null;
+        }
         return (
             <div className="navigation-container">
                 <div className="navigation">
                     {this.renderItem("/researchers", "researchers")}
                     {this.renderItem("/stats", "stats")}
-                    {this.renderItem("/logout", "logout")}
                     {this.renderSpinner()}
                 </div>
             </div>

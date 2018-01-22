@@ -3,7 +3,7 @@ import I18n from "i18n-js";
 import PropTypes from "prop-types";
 import {unmountComponentAtNode} from "react-dom";
 import {Link} from "react-router-dom";
-import logo from "../images/logo@2x.png";
+import logo from "../images/logo.png";
 import "./Header.css";
 import {stop} from "../utils/Utils";
 
@@ -14,11 +14,6 @@ export default class Header extends React.PureComponent {
         const node = document.getElementById("app");
         unmountComponentAtNode(node);
         window.location.href = "/";
-    };
-
-    handleToggle = e => {
-        stop(e);
-        this.setState({dropDownActive: !this.state.dropDownActive});
     };
 
     renderExitLogout = () =>
@@ -40,15 +35,16 @@ export default class Header extends React.PureComponent {
             <div className="header-container">
                 <div className="header">
                     <Link to="/" className="logo"><img src={logo} alt=""/></Link>
-                    <ul className="links">
+                    <span className="title">{I18n.t("header.title")}</span>
+                    {currentUser && <ul className="links">
                         <li className="title"><span>{I18n.t("header.title")}</span></li>
                         <li className="profile"
                             tabIndex="1" onBlur={() => this.setState({dropDownActive: false})}>
                             {this.renderProfileLink(currentUser)}
                         </li>
-                        <li dangerouslySetInnerHTML={{__html: I18n.t("header.links.help_html")}}></li>
+                        < li dangerouslySetInnerHTML={{__html: I18n.t("header.links.help_html")}}></li>
                         {this.renderExitLogout()}
-                    </ul>
+                    </ul>}
                 </div>
             </div>
         );

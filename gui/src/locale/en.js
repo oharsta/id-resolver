@@ -10,7 +10,7 @@ I18n.translations.en = {
     name: "English",
 
     header: {
-        title: "ID identifier",
+        title: "Research ID resolver",
         links: {
             help_html: "<a href=\"https://github.com/oharsta/id-resolver/wiki\" target=\"_blank\">Help</a>",
             logout: "Logout",
@@ -18,8 +18,14 @@ I18n.translations.en = {
         }
     },
 
+    login: {
+        title: "Login",
+        username: "Username",
+        password: "Password"
+    },
     navigation: {
-        researcher: "Researchers",
+        researchers: "Researchers",
+        stats: "Statistics",
         papers: "Papers"
     },
 
