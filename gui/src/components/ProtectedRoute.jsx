@@ -11,6 +11,6 @@ export default function ProtectedRoute({path, currentUser, render}) {
 
 ProtectedRoute.propTypes = {
     path: PropTypes.string.isRequired,
-    currentUser: PropTypes.object.isRequired,
+    currentUser: PropTypes.object,
     render: PropTypes.func.isRequired
 };

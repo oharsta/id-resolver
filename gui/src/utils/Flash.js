@@ -1,6 +1,4 @@
-import {EventEmitter} from "events";
-
-export const emitter = new EventEmitter();
+import {emitter} from "./Utils";
 
 //sneaky global...
 let flash = {};

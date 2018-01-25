@@ -1,41 +1,37 @@
 import React from "react";
 import PropTypes from "prop-types";
-
+import debounce from "lodash/debounce";
 import "./Researchers.css";
+import {search} from "../api";
+import {isEmpty} from "../utils/Utils";
 
 export default class Researchers extends React.PureComponent {
 
-    // constructor(props) {
-    //     super(props);
-    //
-    //     this.state = {
-    //         researchers: [],
-    //         query: ""
-    //     };
-    // }
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            researchers: [],
+            query: ""
+        };
+    }
+
     //
     // showProcess = process => () => {
     //     clearInterval(this.interval);
     //     this.props.history.push("/process/" + process.id);
     // };
     //
-    // search = e => {
-    //     const query = e.target.value;
-    //     this.setState({query: query});
-    //     this.delayedSearch(query);
-    // };
+    search = e => {
+        const query = e.target.value;
+        this.setState({query: query});
+        if (!isEmpty(query) && query.length > 2) {
+            this.delayedSearch(query);
+        }
+
+    };
     //
-    // delayedSearch = debounce(query => {
-    //     const processes = [...this.state.processes];
-    //     const {filterAttributesAssignee} = this.state;
-    //     const {filterAttributesStatus} = this.state;
-    //
-    //
-    //     this.setState({
-    //         query: query,
-    //         filteredProcesses: this.doSearchAndSortAndFilter(query, processes, this.state.sorted, filterAttributesAssignee, filterAttributesStatus)
-    //     });
-    // }, 250);
+    delayedSearch = debounce(query => search(query).then(res => this.setState({researchers: res})), 250);
     //
     // renderProcessesTable(processes, actions, sorted) {
     //     const columns = ["assignee", "step", "status", "customer", "product", "workflow_name", "started", "last_modified", "actions"];
@@ -104,14 +100,6 @@ export default class Researchers extends React.PureComponent {
     //                     <FilterDropDown items={filterAttributesStatus}
     //                                     filterBy={this.filter}
     //                                     label={I18n.t("processes.status")}/>
-    //                     <section className="search">
-    //                         <input className="allowed"
-    //                                placeholder={I18n.t("processes.searchPlaceHolder")}
-    //                                type="text"
-    //                                onChange={this.search}
-    //                                value={query}/>
-    //                         <i className="fa fa-search"></i>
-    //                     </section>
     //                     <a className="new button green" onClick={this.newProcess}>
     //                         {I18n.t("processes.new")}<i className="fa fa-plus"></i>
     //                     </a>
@@ -128,7 +116,20 @@ export default class Researchers extends React.PureComponent {
     //     );
     // }
     render() {
-        return <div>hoi</div>
+        const {query, researchers} = this.state;
+        return <div>
+            <section className="search">
+                <input className="allowed"
+                       placeholder="Zoek naar researchers"
+                       type="text"
+                       onChange={this.search}
+                       value={query}/>
+                <i className="fa fa-search"></i>
+            </section>
+            {researchers.map((researcher, index) => {
+                return <p key={index}>{JSON.stringify(researcher)}</p>
+            })}
+        </div>
     }
 }
 

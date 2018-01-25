@@ -1,7 +1,7 @@
 import React from "react";
 
-import {emitter, getFlash, clearFlash} from "../utils/Flash";
-import {isEmpty} from "../utils/Utils";
+import {clearFlash, getFlash} from "../utils/Flash";
+import {emitter, isEmpty} from "../utils/Utils";
 import "./Flash.css";
 
 export default class Flash extends React.PureComponent {

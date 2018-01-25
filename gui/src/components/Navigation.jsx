@@ -70,5 +70,5 @@ export default class Navigation extends React.PureComponent {
 }
 
 Navigation.propTypes = {
-    currentUser: PropTypes.object.isRequired
+    currentUser: PropTypes.object
 };

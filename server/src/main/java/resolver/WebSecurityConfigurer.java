@@ -88,7 +88,7 @@ public class WebSecurityConfigurer {
     public static class UserSecurityConfigurationAdapter extends WebSecurityConfigurerAdapter {
         @Override
         public void configure(WebSecurity web) throws Exception {
-            web.ignoring().antMatchers("/client/users/encodePassword/**");
+            web.ignoring().antMatchers("/client/users/encodePassword/**", "/client/users/error");
         }
         @Override
         public void configure(HttpSecurity http) throws Exception {

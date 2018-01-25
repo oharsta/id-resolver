@@ -1,9 +1,13 @@
+import {EventEmitter} from "events";
+
 export function stop(e) {
     if (e !== undefined && e !== null) {
         e.preventDefault();
         e.stopPropagation();
     }
 }
+
+export const emitter = new EventEmitter();
 
 export function isEmpty(obj) {
     if (obj === undefined || obj === null) {

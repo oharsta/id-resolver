@@ -9,10 +9,11 @@ import ServerError from "../pages/ServerError";
 import Header from "../components/Header";
 import Navigation from "../components/Navigation";
 import "../locale/en";
-import {reportError} from "../api";
+import {me, reportError} from "../api";
 import Login from "./Login";
 import Researchers from "./Researchers";
 import Stats from "./Stats";
+import {emitter} from "../utils/Utils";
 
 class App extends React.PureComponent {
 
@@ -27,6 +28,9 @@ class App extends React.PureComponent {
             },
             currentUser: undefined
         };
+        this.callback = user => this.setState({currentUser: user});
+        emitter.addListener("login", this.callback);
+
         window.onerror = (msg, url, line, col, err) => {
             if (err && err.response && err.response.status === 401) {
                 this.componentDidMount();
@@ -51,7 +55,8 @@ class App extends React.PureComponent {
     }
 
     componentDidMount() {
-        this.setState({loading: false})
+        this.setState({loading: false});
+        me().then(res => this.setState({currentUser: res})).catch(e => this.setState({currentUser: undefined}));
     }
 
     render() {
@@ -60,8 +65,7 @@ class App extends React.PureComponent {
         if (loading) {
             return null; // render null when app is not ready yet for static spinner
         }
-
-        const {currentUser} = this.state;
+       const {currentUser} = this.state;
 
         return (
             <Router>
@@ -69,7 +73,7 @@ class App extends React.PureComponent {
                     <div>
                         <Flash/>
                         <Header currentUser={currentUser}/>
-                        <Navigation currentUser={currentUser} {...this.props}/>
+                        <Navigation currentUser={currentUser}/>
                         <ErrorDialog isOpen={errorDialogOpen}
                                      close={errorDialogAction}/>
                     </div>

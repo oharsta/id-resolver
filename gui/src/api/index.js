@@ -1,6 +1,6 @@
 import spinner from "../lib/Spin";
 
-const apiPath = "/api/resolver";
+const apiPath = "/client/";
 
 function apiUrl(path) {
     return apiPath + path;
@@ -73,9 +73,9 @@ export function search(query) {
 }
 
 export function reportError(error) {
-    return postPutJson("user/error", error, "post");
+    return postPutJson("users/error", error, "post");
 }
 
-export function me() {
-    return fetchJson("users/me");
+export function me(username, password) {
+    return fetchJson("users/me", {}, {"Authorization": "Basic " + btoa(username + ":" + password)}, false );
 }

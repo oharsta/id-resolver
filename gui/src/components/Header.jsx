@@ -5,7 +5,7 @@ import {unmountComponentAtNode} from "react-dom";
 import {Link} from "react-router-dom";
 import logo from "../images/logo.png";
 import "./Header.css";
-import {stop} from "../utils/Utils";
+import {emitter, stop} from "../utils/Utils";
 
 export default class Header extends React.PureComponent {
 
@@ -13,11 +13,13 @@ export default class Header extends React.PureComponent {
         stop(e);
         const node = document.getElementById("app");
         unmountComponentAtNode(node);
+        emitter.emit("login", undefined);
         window.location.href = "/";
     };
 
     renderExitLogout = () =>
-        <li className="border-left"><a onClick={this.stop}>{I18n.t("header.links.logout")}</a>
+        <li className="border-left">
+            <a onClick={this.stop}>{I18n.t("header.links.logout")}</a>
         </li>;
 
     renderProfileLink(currentUser) {
@@ -36,8 +38,8 @@ export default class Header extends React.PureComponent {
                 <div className="header">
                     <Link to="/" className="logo"><img src={logo} alt=""/></Link>
                     <span className="title">{I18n.t("header.title")}</span>
-                    {currentUser && <ul className="links">
-                        <li className="title"><span>{I18n.t("header.title")}</span></li>
+                    {currentUser &&
+                    <ul className="links">
                         <li className="profile"
                             tabIndex="1" onBlur={() => this.setState({dropDownActive: false})}>
                             {this.renderProfileLink(currentUser)}
@@ -53,5 +55,5 @@ export default class Header extends React.PureComponent {
 }
 
 Header.propTypes = {
-    currentUser: PropTypes.object.isRequired
+    currentUser: PropTypes.object
 };

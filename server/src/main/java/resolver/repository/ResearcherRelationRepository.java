@@ -11,4 +11,5 @@ public interface ResearcherRelationRepository extends CrudRepository<ResearcherR
     @Query(value = "SELECT weight, count(weight) FROM researcher_relations GROUP BY weight ORDER BY weight",
         nativeQuery = true)
     Object[][] groupByWeight();
+
 }
