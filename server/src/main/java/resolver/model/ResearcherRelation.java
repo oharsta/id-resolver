@@ -28,15 +28,23 @@ public class ResearcherRelation {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id")
+    @NotNull
     private Researcher parent;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "child_id")
+    @NotNull
     private Researcher child;
 
     @Column
     @NotNull
     private Integer weight;
+
+    public ResearcherRelation(Researcher parent, Researcher child, @NotNull Integer weight) {
+        this.parent = parent;
+        this.child = child;
+        this.weight = weight;
+    }
 
     public void setParent(Researcher parent) {
         this.parent = parent;

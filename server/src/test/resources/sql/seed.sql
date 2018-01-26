@@ -1,10 +1,10 @@
-INSERT INTO `researchers` (`id`, `organisation`, `organisation_uid`, `employee_type`, `is_authoritative`, `name`, `email`)
+INSERT INTO `researchers` (`id`, `organisation`, `organisation_uid`, `employee_type`, `authoritative`, `name`, `email`)
 VALUES
   (1, 'example.org', 'john.doe', 'NOT', 0, 'John Doe', 'john.doe@example.org');
-INSERT INTO `researchers` (`id`, `organisation`, `organisation_uid`, `employee_type`, `is_authoritative`, `name`, `email`)
+INSERT INTO `researchers` (`id`, `organisation`, `organisation_uid`, `employee_type`, `authoritative`, `name`, `email`)
 VALUES
   (2, 'example.org', 'mary.doe', 'CURRENT', 1, 'Mary Doe', 'mary.doe@example.org');
-INSERT INTO `researchers` (`id`, `organisation`, `organisation_uid`, `employee_type`, `is_authoritative`, `name`, `email`)
+INSERT INTO `researchers` (`id`, `organisation`, `organisation_uid`, `employee_type`, `authoritative`, `name`, `email`)
 VALUES
   (3, 'example.org', 'steward.doe', 'FORMER', 1, 'Steward Doe', 'steward.doe@example.org');
 INSERT INTO `identities` (`id`, `identity_value`, `identity_type`, `researcher_id`)

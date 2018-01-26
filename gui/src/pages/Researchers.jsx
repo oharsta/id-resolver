@@ -117,7 +117,7 @@ export default class Researchers extends React.PureComponent {
     // }
     render() {
         const {query, researchers} = this.state;
-        return <div>
+        return <div className="mod-researchers">
             <section className="search">
                 <input className="allowed"
                        placeholder="Zoek naar researchers"

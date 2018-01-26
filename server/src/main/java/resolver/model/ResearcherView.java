@@ -25,7 +25,7 @@ public class ResearcherView extends Researcher {
         this.setName(researcher.getName());
         this.setEmail(researcher.getEmail());
         this.setId(researcher.getId());
-        this.setIsAuthoritative(researcher.getIsAuthoritative());
+        this.setAuthoritative(researcher.getAuthoritative());
         this.setIdentities(researcher.getIdentities());
         this.setOrganisation(researcher.getOrganisation());
         this.setOrganisationUid(researcher.getOrganisationUid());

@@ -21,7 +21,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
@@ -37,6 +39,8 @@ public class Researcher {
     private Long id;
 
     @OneToMany(mappedBy = "researcher", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @NotNull
+    @Size(min = 1)
     private Set<Identity> identities = new HashSet<>();
 
     @OneToMany(mappedBy = "child")
@@ -61,7 +65,7 @@ public class Researcher {
     private EmployeeType employeeType;
 
     @Column
-    private Boolean isAuthoritative;
+    private Boolean authoritative;
 
     @Column
     private String name;
@@ -75,4 +79,14 @@ public class Researcher {
     @Column
     private Instant updated;
 
+    public Researcher(Set<Identity> identities, String organisation, String organisationUid, EmployeeType employeeType,
+                      Boolean authoritative, String name, String email) {
+        this.identities = identities;
+        this.organisation = organisation;
+        this.organisationUid = organisationUid;
+        this.employeeType = employeeType;
+        this.authoritative = authoritative;
+        this.name = name;
+        this.email = email;
+    }
 }

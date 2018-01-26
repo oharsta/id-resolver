@@ -3,7 +3,7 @@ CREATE TABLE researchers (
   organisation     VARCHAR(255)           NOT NULL,
   organisation_uid VARCHAR(255)           NOT NULL,
   employee_type    VARCHAR(255)           NOT NULL DEFAULT 'NOT',
-  is_authoritative TINYINT(1) DEFAULT '0' NOT NULL,
+  authoritative TINYINT(1) DEFAULT '0' NOT NULL,
   name             VARCHAR(255),
   email            VARCHAR(255),
   created          TIMESTAMP              NOT NULL DEFAULT CURRENT_TIMESTAMP,

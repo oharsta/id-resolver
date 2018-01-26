@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import resolver.api.APIUser;
 import resolver.exception.ResourceNotFoundException;
+import resolver.model.Identity;
 import resolver.model.Researcher;
 import resolver.model.ResearcherRelation;
 import resolver.model.ResearcherView;
@@ -21,9 +22,11 @@ import resolver.repository.ResearcherRepository;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
 
 @RestController()
@@ -79,16 +82,41 @@ public class ResearcherController {
     }
 
     @PostMapping("/researchers")
-    public List<Researcher> newResearcher(@Validated @RequestBody Researcher researcher) {
-        //TODO matching based on papers, id's and emails
-        return null;
+    @Transactional
+    public Researcher newResearcher(@Validated @RequestBody Researcher researcher) {
+        researcher.getIdentities().forEach(identity -> identity.setResearcher(researcher));
+
+        Set<Identity> identities = researcher.getIdentities();
+        List<Researcher> relations = identities.stream().map(identity -> researcherRepository
+            .findByIdentitiesIdentityValueAndIdentitiesIdentityType(identity.getIdentityValue(), identity
+                .getIdentityType())).flatMap(List::stream).collect(toList());
+
+        final Researcher saved = researcherRepository.save(researcher);
+
+        if (saved.getAuthoritative()) {
+            List<ResearcherRelation> children = relations.stream().map(res -> new ResearcherRelation(saved, res,
+                100)).collect(toList());
+            saved.getChildren().addAll(children);
+            children.forEach(child -> researcherRelationRepository.save(child));
+
+            //If both are authoritative then we link them both ways
+            relations.stream().filter(rel -> rel.getAuthoritative()).forEach(res -> researcherRelationRepository.save
+                (new ResearcherRelation(res, saved, 100)));
+        } else {
+            List<ResearcherRelation> parents = relations.stream().map(res -> new ResearcherRelation(res, saved,
+                100)).collect(toList());
+            saved.getParents().addAll(parents);
+            parents.forEach(parent -> researcherRelationRepository.save(parent));
+        }
+
+        return replacePersistentObjectWithViewObjects(saved);
     }
 
     @GetMapping("/stats")
     public Map<String, Object> stats() {
         Map<String, Object> result = new HashMap<>();
-        result.put("organisations",researcherRepository.countByOrganisationDistinct());
-        result.put("researchers",researcherRepository.count());
+        result.put("organisations", researcherRepository.countByOrganisationDistinct());
+        result.put("researchers", researcherRepository.count());
         result.put("identities", researcherRepository.countByIdentityValueDistinct());
         result.put("weights", Stream.of(researcherRelationRepository.groupByWeight()).collect(Collectors
             .toMap(obj -> obj[0], obj -> obj[1])));
