@@ -6,7 +6,7 @@
 
     .card {
         @include card;
-        padding: 15px 15px 0 15px;
+        padding: 0 15px;
     }
     section.search {
         position: relative;

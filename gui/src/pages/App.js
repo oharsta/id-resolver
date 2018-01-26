@@ -63,12 +63,10 @@ class App extends React.PureComponent {
 
     render() {
         const {loading, errorDialogAction, errorDialogOpen, currentUser} = this.state;
-
+        //TODO use config is loaded instead
         if (loading || !currentUser) {
             return null; // render null when app is not ready yet for static spinner
         }
-        debugger;
-
         return (
             <Router>
                 <div>
