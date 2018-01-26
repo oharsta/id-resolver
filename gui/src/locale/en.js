@@ -21,12 +21,17 @@ I18n.translations.en = {
     login: {
         title: "Login",
         username: "Username",
-        password: "Password"
+        password: "Password",
+        signIn: "Sign in"
     },
     navigation: {
         researchers: "Researchers",
         stats: "Statistics",
         papers: "Papers"
+    },
+
+    researchers: {
+        placeholder: "Search for researchers - minimal 3 characters"
     },
 
     error_dialog: {

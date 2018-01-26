@@ -26,7 +26,8 @@ class App extends React.PureComponent {
             errorDialogAction: () => {
                 this.setState({errorDialogOpen: false});
             },
-            currentUser: undefined
+            currentUser: undefined,
+            config: {}
         };
         this.callback = user => this.setState({currentUser: user});
         emitter.addListener("login", this.callback);
@@ -56,16 +57,17 @@ class App extends React.PureComponent {
 
     componentDidMount() {
         this.setState({loading: false});
-        me().then(res => this.setState({currentUser: res})).catch(e => this.setState({currentUser: undefined}));
+        me().then(res => this.setState({currentUser: res}))
+            .catch(e => this.setState({currentUser: undefined}));
     }
 
     render() {
-        const {loading, errorDialogAction, errorDialogOpen} = this.state;
+        const {loading, errorDialogAction, errorDialogOpen, currentUser} = this.state;
 
-        if (loading) {
+        if (loading || !currentUser) {
             return null; // render null when app is not ready yet for static spinner
         }
-       const {currentUser} = this.state;
+        debugger;
 
         return (
             <Router>

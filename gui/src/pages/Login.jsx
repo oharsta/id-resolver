@@ -37,7 +37,7 @@ export default class Login extends React.PureComponent {
                 <label htmlFor="password">{I18n.t("login.password")}</label>
                 <input type="password" value={password} onChange={e => this.setState({"password": e.target.value})}/>
                 <section className="actions">
-                    <button onClick={this.login} className="button blue">Sign in</button>
+                    <button onClick={this.login} className="button blue">{I18n.t("login.signIn")}</button>
                 </section>
                 {error && <em className="error">{"Foutieve gebruikersnaam of wachtwoord"}</em>}
             </div>

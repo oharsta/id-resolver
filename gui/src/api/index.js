@@ -79,3 +79,7 @@ export function reportError(error) {
 export function me(username, password) {
     return fetchJson("users/me", {}, {"Authorization": "Basic " + btoa(username + ":" + password)}, false );
 }
+
+export function config() {
+    return fetchJson("users/config");
+}

@@ -2,8 +2,10 @@ import React from "react";
 import PropTypes from "prop-types";
 import debounce from "lodash/debounce";
 import "./Researchers.css";
-import {search} from "../api";
+import {researcherById, search} from "../api";
 import {isEmpty} from "../utils/Utils";
+import I18n from "i18n-js";
+import Autocomplete from "../components/Autocomplete";
 
 export default class Researchers extends React.PureComponent {
 
@@ -12,16 +14,17 @@ export default class Researchers extends React.PureComponent {
 
         this.state = {
             researchers: [],
+            researcher: null,
             query: ""
         };
     }
 
-    //
-    // showProcess = process => () => {
-    //     clearInterval(this.interval);
-    //     this.props.history.push("/process/" + process.id);
-    // };
-    //
+
+    showResearcherDetail = researcher => researcherById(researcher.id).then(res => this.setState({
+        researchers: [],
+        researcher: res
+    }));
+
     search = e => {
         const query = e.target.value;
         this.setState({query: query});
@@ -31,7 +34,7 @@ export default class Researchers extends React.PureComponent {
 
     };
     //
-    delayedSearch = debounce(query => search(query).then(res => this.setState({researchers: res})), 250);
+    delayedSearch = debounce(query => search(query).then(res => this.setState({researcher: null, researchers: res})), 250);
     //
     // renderProcessesTable(processes, actions, sorted) {
     //     const columns = ["assignee", "step", "status", "customer", "product", "workflow_name", "started", "last_modified", "actions"];
@@ -120,15 +123,13 @@ export default class Researchers extends React.PureComponent {
         return <div className="mod-researchers">
             <section className="search">
                 <input className="allowed"
-                       placeholder="Zoek naar researchers"
+                       placeholder={I18n.t("researchers.placeholder")}
                        type="text"
                        onChange={this.search}
                        value={query}/>
                 <i className="fa fa-search"></i>
+                <Autocomplete suggestions={researchers} query={query} itemSelected={this.showResearcherDetail}/>
             </section>
-            {researchers.map((researcher, index) => {
-                return <p key={index}>{JSON.stringify(researcher)}</p>
-            })}
         </div>
     }
 }

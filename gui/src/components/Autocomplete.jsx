@@ -1,17 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
-import scrollIntoView from "scroll-into-view";
 
 import "./Autocomplete.css";
 import {isEmpty} from "../utils/Utils";
 
 export default class Autocomplete extends React.PureComponent {
-
-    componentDidUpdate(prevProps) {
-        if (this.selectedRow && prevProps.selectedItem !== this.props.selectedItem && !isEmpty(this.props.suggestions)) {
-            scrollIntoView(this.selectedRow);
-        }
-    }
 
     itemName = (item, query) => {
         const name = item.name;
@@ -24,26 +17,18 @@ export default class Autocomplete extends React.PureComponent {
     };
 
     render() {
-        const {suggestions, query, selectedItem, personIndex, itemSelected, className} = this.props;
+        const {suggestions, query, itemSelected} = this.props;
         if (isEmpty(suggestions)) {
             return null;
         }
         return (
-            <section className={`autocomplete ${className || ""}`}>
+            <section className="autocomplete">
                 <table className="result">
                     <tbody>
                     {suggestions
                         .map((item, index) => (
                                 <tr key={index}
-                                    className={selectedItem === index ? "active" : ""}
-                                    onClick={() => itemSelected(item, personIndex)}
-                                    ref={ref => {
-                                        if (selectedItem === index) {
-                                            this.selectedRow = ref;
-                                        } else if (suggestions.length - 1 === index) {
-                                            this.lastRow = ref;
-                                        }
-                                    }}>
+                                    onClick={() => itemSelected(item)}>
                                     <td>{this.itemName(item, query)}</td>
                                     <td>{item.email || ""}</td>
                                 </tr>
@@ -60,10 +45,7 @@ export default class Autocomplete extends React.PureComponent {
 Autocomplete.propTypes = {
     suggestions: PropTypes.array.isRequired,
     query: PropTypes.string.isRequired,
-    selectedItem: PropTypes.number,
-    personIndex: PropTypes.number.isRequired,
-    itemSelected: PropTypes.func.isRequired,
-    className: PropTypes.string,
+    itemSelected: PropTypes.func.isRequired
 };
 
 
