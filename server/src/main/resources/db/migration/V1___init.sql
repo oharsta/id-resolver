@@ -55,16 +55,16 @@ CREATE TABLE papers (
   ENGINE = InnoDB;
 
 
-CREATE TABLE authors (
+CREATE TABLE authorships (
   id            INT                    NOT NULL AUTO_INCREMENT PRIMARY KEY,
   researcher_id INT                    NOT NULL,
   paper_id      INT                    NOT NULL,
   co_author     TINYINT(1) DEFAULT '1' NOT NULL,
   created       TIMESTAMP              NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated       TIMESTAMP              NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  CONSTRAINT authors_researcher_id FOREIGN KEY (researcher_id) REFERENCES researchers (id)
+  CONSTRAINT authorships_researcher_id FOREIGN KEY (researcher_id) REFERENCES researchers (id)
     ON DELETE CASCADE,
-  CONSTRAINT authors_paper_id FOREIGN KEY (paper_id) REFERENCES papers (id)
+  CONSTRAINT authorships_paper_id FOREIGN KEY (paper_id) REFERENCES papers (id)
     ON DELETE CASCADE
 
 )

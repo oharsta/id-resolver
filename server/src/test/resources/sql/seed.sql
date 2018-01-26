@@ -31,16 +31,16 @@ VALUES
 INSERT INTO `papers` (`id`, `title`, `publisher`, `published`, `doi`, `public_url`)
 VALUES
   (2, 'boring book', 'example', '2018-01-19 11:36:52', '10.1000/183', 'http://example.com/boring_book');
-INSERT INTO `authors` (`id`, `researcher_id`, `paper_id`, `co_author`)
+INSERT INTO `authorships` (`id`, `researcher_id`, `paper_id`, `co_author`)
 VALUES
   (1, 1, 1, 0);
-INSERT INTO `authors` (`id`, `researcher_id`, `paper_id`, `co_author`)
+INSERT INTO `authorships` (`id`, `researcher_id`, `paper_id`, `co_author`)
 VALUES
   (2, 2, 2, 1);
-INSERT INTO `authors` (`id`, `researcher_id`, `paper_id`, `co_author`)
+INSERT INTO `authorships` (`id`, `researcher_id`, `paper_id`, `co_author`)
 VALUES
   (3, 3, 2, 0);
-INSERT INTO `authors` (`id`, `researcher_id`, `paper_id`, `co_author`)
+INSERT INTO `authorships` (`id`, `researcher_id`, `paper_id`, `co_author`)
 VALUES
   (4, 1, 2, 1);
 

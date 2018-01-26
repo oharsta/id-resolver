@@ -1,9 +1,5 @@
 package resolver.model;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,11 +13,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.Instant;
@@ -44,10 +36,10 @@ public class Researcher {
     private Set<Identity> identities = new HashSet<>();
 
     @OneToMany(mappedBy = "child")
-    private Set<ResearcherRelation> parents = new HashSet<>();
+    private Set<ResearcherParent> parents = new HashSet<>();
 
     @OneToMany(mappedBy = "parent")
-    private Set<ResearcherRelation> children = new HashSet<>();
+    private Set<ResearcherChild> children = new HashSet<>();
 
     @Column
     @NotNull
@@ -58,7 +50,7 @@ public class Researcher {
     private String organisationUid;
 
     @OneToMany(mappedBy = "researcher")
-    private Set<Author> authors = new HashSet<>();
+    private Set<Authorship> authorships = new HashSet<>();
 
     @Column
     @Enumerated(EnumType.STRING)

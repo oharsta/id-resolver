@@ -16,10 +16,10 @@ import java.util.stream.Stream;
 
 import static org.junit.Assert.assertEquals;
 
-public class ResearcherRelationRepositoryTest extends AbstractIntegrationTest {
+public class ResearcherChildRepositoryTest extends AbstractIntegrationTest {
 
     @Autowired
-    private ResearcherRelationRepository repository;
+    private ResearcherChildRepository repository;
 
     @Test
     public void groupByWeight() {

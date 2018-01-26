@@ -49,4 +49,13 @@ public class ResearcherRepositoryTest extends AbstractIntegrationTest {
         long c = repository.countByIdentityValueDistinct();
         assertEquals(3, c);
     }
+
+    @Test
+    public void findByPapers() {
+        Researcher researcher = new Researcher();
+        researcher.setId(1L);
+        List<Researcher> byPapers = repository.findByJoinedPapers(researcher);
+        assertEquals(1, byPapers.size());
+        assertEquals("mary.doe@example.org", byPapers.get(0).getEmail());
+    }
 }

@@ -2,6 +2,7 @@ package resolver.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -13,14 +14,17 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import java.time.Instant;
 
-@Entity(name = "researcher_relations")
+@Entity(name = "researcher_childs")
+@Table(name = "researcher_relations")
 @Getter
 @NoArgsConstructor
-public class ResearcherRelation {
+@EqualsAndHashCode(of = "id")
+public class ResearcherChild {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,6 +33,7 @@ public class ResearcherRelation {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id")
     @NotNull
+    @JsonIgnore
     private Researcher parent;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -40,17 +45,9 @@ public class ResearcherRelation {
     @NotNull
     private Integer weight;
 
-    public ResearcherRelation(Researcher parent, Researcher child, @NotNull Integer weight) {
+    public ResearcherChild(Researcher parent, Researcher child, @NotNull Integer weight) {
         this.parent = parent;
         this.child = child;
         this.weight = weight;
-    }
-
-    public void setParent(Researcher parent) {
-        this.parent = parent;
-    }
-
-    public void setChild(Researcher child) {
-        this.child = child;
     }
 }

@@ -15,12 +15,12 @@ import java.util.Optional;
 public interface ResearcherRepository extends CrudRepository<Researcher, Long> {
 
     @EntityGraph(value = "findByOrganisationAndOrganisationUid", type = EntityGraph.EntityGraphType.LOAD,
-        attributePaths = {"parents.parent", "parents.child", "children.parent", "children.child", "authors",
+        attributePaths = {"parents.parent", "parents.child", "children.parent", "children.child", "authorships",
             "identities"})
     Optional<Researcher> findByOrganisationAndOrganisationUid(String organisation, String organisationUid);
 
     @EntityGraph(value = "findById", type = EntityGraph.EntityGraphType.LOAD,
-        attributePaths = {"parents.parent", "parents.child", "children.parent", "children.child", "authors",
+        attributePaths = {"parents.parent", "parents.child", "children.parent", "children.child", "authorships",
             "identities"})
     Optional<Researcher> findById(Long id);
 
@@ -46,4 +46,10 @@ public interface ResearcherRepository extends CrudRepository<Researcher, Long> {
 
     @Query(value = "select count(distinct identity_value) from identities", nativeQuery = true)
     long countByIdentityValueDistinct();
+
+    @Query("select r from researchers r inner join r.authorships a inner join a.paper p " +
+        "where a.coAuthor is 1 and r is not :researcher and p.id in " +
+        "(select p2.id from papers p2 inner join p2.authorships a2 " +
+        "inner join a2.researcher r2 where r2 is :researcher and a2.coAuthor is 1)")
+    List<Researcher> findByJoinedPapers(@Param("researcher") Researcher researcher);
 }

@@ -19,10 +19,10 @@ import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import java.time.Instant;
 
-@Entity(name = "authors")
+@Entity(name = "authorships")
 @Getter
 @NoArgsConstructor
-public class Author {
+public class Authorship {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

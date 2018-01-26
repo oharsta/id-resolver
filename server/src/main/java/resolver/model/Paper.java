@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -26,9 +27,9 @@ public class Paper {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(mappedBy = "paper", orphanRemoval = true)
+    @OneToMany(mappedBy = "paper", orphanRemoval = true, cascade = CascadeType.ALL)
     @JsonIgnore
-    private Set<Author> authors = new HashSet<>();
+    private Set<Authorship> authorships = new HashSet<>();
 
     @NotNull
     @Column
