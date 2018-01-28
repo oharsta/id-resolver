@@ -1,0 +1,14 @@
+@import "../stylesheets/mixins.scss";
+@import "../stylesheets/forms.scss";
+
+.mod-stats {
+    @include page;
+
+    margin: 25px;
+
+    .card {
+        @include card;
+        padding: 0 15px;
+    }
+
+}
