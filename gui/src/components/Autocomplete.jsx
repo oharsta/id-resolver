@@ -6,14 +6,21 @@ import {isEmpty} from "../utils/Utils";
 
 export default class Autocomplete extends React.PureComponent {
 
-    itemName = (item, query) => {
-        const name = item.name;
+    partName = (item, query, property) => {
+        const name = item[property];
+        if (isEmpty(name)) {
+            return "";
+        }
         const nameToLower = name.toLowerCase();
         const indexOf = nameToLower.indexOf(query.toLowerCase());
+        if (indexOf === -1) {
+            return <span>{name}</span>;
+        }
         const first = name.substring(0, indexOf);
         const middle = name.substring(indexOf, indexOf + query.length);
         const last = name.substring(indexOf + query.length);
         return <span>{first}<span className="matched">{middle}</span>{last}</span>;
+
     };
 
     render() {
@@ -21,6 +28,7 @@ export default class Autocomplete extends React.PureComponent {
         if (isEmpty(suggestions)) {
             return null;
         }
+        const properties = ["name", "email", "organisation", "organisationUid"];
         return (
             <section className="autocomplete">
                 <table className="result">
@@ -29,8 +37,9 @@ export default class Autocomplete extends React.PureComponent {
                         .map((item, index) => (
                                 <tr key={index}
                                     onClick={() => itemSelected(item)}>
-                                    <td>{this.itemName(item, query)}</td>
-                                    <td>{item.email || ""}</td>
+                                    {properties.map((prop, index) =>
+                                        <td key={index}>{this.partName(item, query, prop)}</td>
+                                    )}
                                 </tr>
                             )
                         )}

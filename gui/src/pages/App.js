@@ -9,11 +9,11 @@ import ServerError from "../pages/ServerError";
 import Header from "../components/Header";
 import Navigation from "../components/Navigation";
 import "../locale/en";
-import {me, reportError} from "../api";
+import {config, me, reportError} from "../api";
 import Login from "./Login";
 import Researchers from "./Researchers";
 import Stats from "./Stats";
-import {emitter} from "../utils/Utils";
+import {emitter, isEmpty} from "../utils/Utils";
 
 class App extends React.PureComponent {
 
@@ -56,17 +56,24 @@ class App extends React.PureComponent {
     }
 
     componentDidMount() {
-        this.setState({loading: false});
-        me().then(res => this.setState({currentUser: res}))
-            .catch(e => this.setState({currentUser: undefined}));
+        config().then(res => {
+            this.setState({config: res, loading: false});
+            me().then(res => this.setState({currentUser: res}))
+                .catch(e => this.setState({currentUser: undefined}));
+        });
     }
 
     render() {
-        const {loading, errorDialogAction, errorDialogOpen, currentUser} = this.state;
-        //TODO use config is loaded instead
-        if (loading || !currentUser) {
-            return null; // render null when app is not ready yet for static spinner
+        const {loading, errorDialogAction, errorDialogOpen, currentUser, config} = this.state;
+        if (loading || isEmpty(config)) {
+            return null;
+        } else {
+            const environments = config["environments"];
+            if (environments.indexOf("dev") > -1 && isEmpty(currentUser)) {
+                return null;
+            }
         }
+
         return (
             <Router>
                 <div>

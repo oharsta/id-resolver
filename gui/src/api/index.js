@@ -83,3 +83,7 @@ export function me(username, password) {
 export function config() {
     return fetchJson("users/config");
 }
+
+export function stats() {
+    return fetchJson("stats");
+}
