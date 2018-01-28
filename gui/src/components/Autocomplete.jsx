@@ -7,7 +7,7 @@ import {isEmpty} from "../utils/Utils";
 export default class Autocomplete extends React.PureComponent {
 
     partName = (item, query, property) => {
-        const name = item[property];
+        const name = item[property] || property;
         if (isEmpty(name)) {
             return "";
         }
@@ -23,26 +23,31 @@ export default class Autocomplete extends React.PureComponent {
 
     };
 
+    researcherRow = (item, index) => {
+        const {query, itemSelected} = this.props;
+        const properties = ["name", "email", "organisation", "organisationUid"];
+        const identities = (item.identities || []).map(identity => `${identity.identityType} - ${identity.identityValue}`);
+        return <tr key={index}
+            onClick={() => itemSelected(item)}>
+            {properties.map((prop, index) =>
+                <td key={index}>{this.partName(item, query, prop)}</td>
+            )}
+            {identities.map((identity) =>
+                <td key={identity}>{this.partName(item, query, identity)}</td>
+            )}
+        </tr>;
+    };
+
     render() {
-        const {suggestions, query, itemSelected} = this.props;
+        const {suggestions} = this.props;
         if (isEmpty(suggestions)) {
             return null;
         }
-        const properties = ["name", "email", "organisation", "organisationUid"];
         return (
             <section className="autocomplete">
                 <table className="result">
                     <tbody>
-                    {suggestions
-                        .map((item, index) => (
-                                <tr key={index}
-                                    onClick={() => itemSelected(item)}>
-                                    {properties.map((prop, index) =>
-                                        <td key={index}>{this.partName(item, query, prop)}</td>
-                                    )}
-                                </tr>
-                            )
-                        )}
+                    {suggestions.map(this.researcherRow)}
                     </tbody>
                 </table>
             </section>

@@ -1,5 +1,4 @@
 @import "../stylesheets/mixins.scss";
-@import "../stylesheets/media_queries.scss";
 
 .mod-researchers {
     @include page;
@@ -33,107 +32,10 @@
             font-size: 24px;
         }
     }
-    a.button {
-        i.fa-plus {
-            font-size: inherit;
-            margin-left: 10px;
-            margin-top: 4px;
-        }
-
+    section.details {
+        margin-top: 25px;
     }
 
-    section.researcher {
-        display: flex;
-        padding: 0 20px 20px 20px;
-        background-color: white;
 
-    }
-
-    table.researchers {
-        width: 100%;
-        word-break: break-all;
-        td, th {
-            text-align: left;
-        }
-        tr {
-            border-bottom: 1px solid $light-grey;
-        }
-        thead {
-            th {
-                cursor: pointer;
-                padding: 5px 5px 10px 5px
-            }
-            th.assignee {
-                width: 10%;
-            }
-            th.step {
-                width: 10%;
-            }
-            th.status {
-                width: 10%;
-            }
-            th.customer {
-                width: 10%;
-            }
-            th.product {
-                width: 10%;
-            }
-            th.workflow_name {
-                width: 15%;
-            }
-            th.started {
-                width: 15%;
-            }
-            th.last_modified {
-                width: 15%;
-            }
-            th.actions {
-                text-align: right;
-                width: 5%;
-            }
-            span {
-                text-transform: uppercase;
-                font-weight: bold;
-                font-size: larger;
-                color: $medium-grey;
-                padding: 7px 2px 7px 0;
-            }
-            i.fa {
-                float: right;
-                margin-right: 15px;
-                color: $medium-grey;
-                font-size: 18px;
-            }
-        }
-        tbody {
-            tr {
-                cursor: pointer;
-                &:hover {
-                    background-color: $hover;
-                    &.suspended {
-                        background-color: darken($light-gold, 10%);
-                    }
-                    &.running {
-                        background-color: darken($light-green, 10%);
-                    }
-                    td.actions i.fa-ellipsis-h {
-                        color: $blue;
-                    }
-                }
-            }
-            td.assignee {
-                color: $blue;
-                font-weight: bold;
-                padding-right: 15px;
-            }
-            td.actions {
-                cursor: pointer;
-                text-align: right;
-                font-size: 18px;
-                position: relative;
-
-            }
-        }
-    }
 }
 

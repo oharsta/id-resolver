@@ -2,10 +2,11 @@ import React from "react";
 import PropTypes from "prop-types";
 import debounce from "lodash/debounce";
 import "./Researchers.css";
-import {researcherById, search} from "../api";
+import {config, researcherById, search} from "../api";
 import {isEmpty} from "../utils/Utils";
 import I18n from "i18n-js";
 import Autocomplete from "../components/Autocomplete";
+import ReactJson from 'react-json-view'
 
 export default class Researchers extends React.PureComponent {
 
@@ -18,6 +19,7 @@ export default class Researchers extends React.PureComponent {
         };
     }
 
+    componentDidMount = () => config();
 
     showResearcherDetail = researcher => researcherById(researcher.id).then(res => this.setState({
         researchers: [],
@@ -30,6 +32,8 @@ export default class Researchers extends React.PureComponent {
         this.setState({query: query});
         if (!isEmpty(query) && query.length > 2) {
             this.delayedSearch(query);
+        } else {
+            this.setState({researchers: []});
         }
     };
 
@@ -37,7 +41,7 @@ export default class Researchers extends React.PureComponent {
 
     render() {
         const {query, researchers, researcher} = this.state;
-        return <div className="mod-researchers">
+        return <div className="mod-researchers card">
             <section className="search">
                 <input className="allowed"
                        placeholder={I18n.t("researchers.placeholder")}
@@ -47,9 +51,9 @@ export default class Researchers extends React.PureComponent {
                 <i className="fa fa-search"></i>
                 <Autocomplete suggestions={researchers} query={query} itemSelected={this.showResearcherDetail}/>
             </section>
-            {!isEmpty(researcher) && <div className="details">
-                {JSON.stringify(researcher)}
-            </div>}
+            {!isEmpty(researcher) && <section className="details">
+                {<ReactJson src={researcher} name="Researcher"/>}
+            </section>}
         </div>
     }
 }

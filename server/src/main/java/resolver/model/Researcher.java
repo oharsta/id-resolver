@@ -1,5 +1,6 @@
 package resolver.model;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -24,6 +25,7 @@ import java.util.Set;
 @Getter
 @NoArgsConstructor
 @Setter
+@EqualsAndHashCode(of = "id")
 public class Researcher {
 
     @Id

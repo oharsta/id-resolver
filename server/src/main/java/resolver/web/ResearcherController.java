@@ -27,6 +27,7 @@ import resolver.repository.ResearcherRepository;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -80,8 +81,8 @@ public class ResearcherController {
     }
 
     @GetMapping("find/researchers")
-    public List<Researcher> find(@RequestParam("q") String q) {
-        return researcherRepository.findByVarious(q.toLowerCase());
+    public Set<Researcher> find(@RequestParam("q") String q) {
+        return new HashSet<>(researcherRepository.findByVarious(q.toLowerCase()));
     }
 
     @PostMapping("/researchers")
@@ -167,6 +168,7 @@ public class ResearcherController {
         result.put("organisations", researcherRepository.countByOrganisationDistinct());
         result.put("researchers", researcherRepository.count());
         result.put("identities", researcherRepository.countByIdentityValueDistinct());
+        result.put("relations", researcherChildRepository.count());
         result.put("weights", Stream.of(researcherChildRepository.groupByWeight()).collect(Collectors
             .toMap(obj -> obj[0], obj -> obj[1])));
         return result;
