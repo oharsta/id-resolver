@@ -1,6 +1,12 @@
 ## [Getting started](#getting-started)
 
-ID Resolver analyses researcher and show the relations among them.
+ID Resolver analyses researcher and show the relations among them. You'll need the following software to run both 
+server and client:
+
+* yarn
+* maven3
+* jdk8
+* mySql
 
 ### [Create database](#create-database)
 
@@ -20,6 +26,11 @@ Start the server in dev modus - which means you do not need to login - with:
 cd server
 mvn spring-boot:run -Dspring.profiles.active=dev
 ```
+To test the login just don't specify profile:
+```
+mvn spring-boot:run
+```
+
 Start the client with:
 ```
 cd gui
@@ -27,6 +38,11 @@ yarn install
 yarn start
 ```
 
+You can run the tests that will leave test data in the database.
+```
+cd server
+mvn clean install 
+```
 ### [Security](#security)
 
 The server API has two securities: one for the API intended to be used by organisations and one for the
@@ -63,3 +79,5 @@ curl --user user:secret http://localhost:8080/api/resolver/stats | python -m jso
 curl --user user:secret http://localhost:8080/client/users/me | python -m json.tool
 
 ```
+@TODO
+Example curl's for creation / updates and deletions of the researchers.
