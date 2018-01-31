@@ -8,6 +8,7 @@ h2 {
 
 label {
   text-transform: uppercase;
+  margin-top: 15px;
   font-weight: bold;
   color: $medium-grey;
   display: block;
@@ -27,14 +28,14 @@ em {
 
 input[type=text], input[type=password], input[type=email], input[type=number], textarea {
   display: block;
-  width: 100%;
+  width: 35%;
   border: 1px solid $lighter-grey;
   padding: 6px;
   border-radius: $br;
   font-size: 14px;
   margin-top: 5px;
   &[disabled], &:read-only {
-    background-color: $lightest-grey;
+    background-color: $light-grey;
   }
 }
 

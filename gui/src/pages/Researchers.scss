@@ -34,6 +34,24 @@
     }
     section.details {
         margin-top: 25px;
+        padding: 10px;
+        background-color: white;
+        border-radius: 3px;
+        input[type=text], input[type=password] {
+            width: 100%;
+            background-color: white;
+        }
+        section.children, section.parents {
+            margin-bottom: 15px;
+            p {
+                font-size: larger;
+                margin-bottom: 5px;
+            }
+            div.child, div.parent {
+                margin-left: 15px;
+            }
+        }
+
     }
 
 

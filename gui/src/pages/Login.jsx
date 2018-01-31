@@ -16,6 +16,8 @@ export default class Login extends React.PureComponent {
         };
     }
 
+    componentDidMount = () => this.username.focus();
+
     login = e => {
         stop(e);
         const {username, password} = this.state;
@@ -33,7 +35,7 @@ export default class Login extends React.PureComponent {
         return (
             <div className="mod-login">
                 <label htmlFor="username">{I18n.t("login.username")}</label>
-                <input type="text" value={username} onChange={e => this.setState({"username": e.target.value})}/>
+                <input ref={ref => this.username = ref} type="text" value={username} onChange={e => this.setState({"username": e.target.value})}/>
                 <label htmlFor="password">{I18n.t("login.password")}</label>
                 <input type="password" value={password} onChange={e => this.setState({"password": e.target.value})}/>
                 {error && <em className="error">{"Wrong username or password"}</em>}
