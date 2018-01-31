@@ -23,7 +23,6 @@ import java.time.Instant;
 @Table(name = "researcher_relations")
 @Getter
 @NoArgsConstructor
-@EqualsAndHashCode(of = "id")
 public class ResearcherChild {
 
     @Id

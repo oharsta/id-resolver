@@ -72,15 +72,6 @@ public class ResearcherController {
         researcherRepository.deleteById(id);
     }
 
-    @GetMapping("/researchers/{organisation}/{organisationUid}")
-    public ResearcherView researcherByOrgAndOrgUid(APIUser apiUser, @PathVariable("organisation") String organisation,
-                                                   @PathVariable("organisationUid") String organisationUid) {
-        return new ResearcherView(researcherRepository.findByOrganisationAndOrganisationUid(organisation,
-            organisationUid).orElseThrow(
-            () -> new ResourceNotFoundException(String.format("Researcher with organisation %s and organisationUid %s" +
-                " not found", organisation, organisationUid))));
-    }
-
     @GetMapping("find/researchers")
     public Set<Researcher> find(@RequestParam("q") String q) {
         return new HashSet<>(researcherRepository.findByVarious(q.toLowerCase()));

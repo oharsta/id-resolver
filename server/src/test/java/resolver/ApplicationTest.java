@@ -6,6 +6,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.RestTemplate;
 
@@ -15,6 +16,7 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@ActiveProfiles("dev")
 public class ApplicationTest {
 
     @LocalServerPort
@@ -26,6 +28,10 @@ public class ApplicationTest {
             Map.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(response.getBody().get("status"), "UP");
+
+        response = new RestTemplate().getForEntity("http://localhost:" + port + "/client/users/me", Map.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        System.out.println(response.getBody());
     }
 
     @Test

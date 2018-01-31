@@ -20,7 +20,6 @@ import javax.validation.constraints.NotNull;
 @Table(name = "researcher_relations")
 @Getter
 @NoArgsConstructor
-@EqualsAndHashCode(of = "id")
 public class ResearcherParent {
 
     @Id

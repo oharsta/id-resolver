@@ -14,11 +14,6 @@ import java.util.Optional;
 @Repository
 public interface ResearcherRepository extends CrudRepository<Researcher, Long> {
 
-    @EntityGraph(value = "findByOrganisationAndOrganisationUid", type = EntityGraph.EntityGraphType.LOAD,
-        attributePaths = {"parents.parent", "parents.child", "children.parent", "children.child", "authorships",
-            "identities"})
-    Optional<Researcher> findByOrganisationAndOrganisationUid(String organisation, String organisationUid);
-
     @EntityGraph(value = "findById", type = EntityGraph.EntityGraphType.LOAD,
         attributePaths = {"parents.parent", "parents.child", "children.parent", "children.child", "authorships",
             "identities"})

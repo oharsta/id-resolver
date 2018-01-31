@@ -10,9 +10,12 @@ import resolver.model.IdentityType;
 import resolver.model.Researcher;
 import resolver.model.ResearcherView;
 
+import java.util.Arrays;
+
 import static io.restassured.RestAssured.given;
 import static java.util.Collections.singletonList;
 import static org.apache.http.HttpStatus.SC_FORBIDDEN;
+import static org.apache.http.HttpStatus.SC_NOT_FOUND;
 import static org.apache.http.HttpStatus.SC_OK;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItems;
@@ -47,6 +50,36 @@ public class ResearcherControllerTest extends AbstractIntegrationTest {
     }
 
     @Test
+    public void researcherById404() {
+        given()
+            .auth().preemptive().basic("user", "secret")
+            .when()
+            .get("api/resolver/researchers/999999")
+            .then()
+            .statusCode(SC_NOT_FOUND);
+    }
+
+    @Test
+    public void deleteResearcher() {
+        given()
+            .auth().preemptive().basic("user", "secret")
+            .when()
+            .delete("api/resolver/researchers/1")
+            .then()
+            .statusCode(SC_OK);
+    }
+
+    @Test
+    public void deleteResearcher404() {
+        given()
+            .auth().preemptive().basic("user", "secret")
+            .when()
+            .delete("api/resolver/researchers/999999")
+            .then()
+            .statusCode(SC_NOT_FOUND);
+    }
+
+    @Test
     public void researchersWrongAuth() throws Exception {
         given()
             .auth().preemptive().basic("nope", "secret")
@@ -74,6 +107,25 @@ public class ResearcherControllerTest extends AbstractIntegrationTest {
             .body("parents.size()", equalTo(0))
             .body("children.size()", equalTo(1))
             .body("children[0].weight", equalTo(100));
+    }
+
+    @Test
+    public void newNonAuthoritativeResearcher() throws Exception {
+        Researcher researcher = new Researcher(Identity.identities(singletonList("15737449500"),
+            singletonList(IdentityType.SCOPUS)), "example.org", "sam.doe",
+            EmployeeType.CURRENT, Boolean.FALSE, "Sam", "sam@dummy.org");
+
+        given()
+            .auth().preemptive().basic("user", "secret")
+            .header(new Header("Content-type", "application/json"))
+            .body(researcher)
+            .when()
+            .post("api/resolver/researchers")
+            .then()
+            .body("id", notNullValue())
+            .body("identities.size()", equalTo(1))
+            .body("parents.size()", equalTo(1))
+            .body("parents[0].weight", equalTo(100));
     }
 
     @Test
@@ -124,5 +176,31 @@ public class ResearcherControllerTest extends AbstractIntegrationTest {
         assertEquals(0, researcherView.getChildren().size());
         assertEquals("changed@org.com", researcherView.getEmail());
     }
+
+    @Test
+    public void find() {
+        given()
+            .auth().preemptive().basic("user", "secret")
+            .when()
+            .get("api/resolver/find/researchers?q=doe")
+            .then()
+            .statusCode(SC_OK)
+            .body("id", equalTo(Arrays.asList(1,2,3)));
+    }
+
+    @Test
+    public void stats() {
+        given()
+            .auth().preemptive().basic("user", "secret")
+            .when()
+            .get("api/resolver/stats")
+            .then()
+            .statusCode(SC_OK)
+            .body("organisations", equalTo(1))
+            .body("researchers", equalTo(3))
+            .body("identities", equalTo(3))
+            .body("relations", equalTo(3));
+    }
+
 
 }

@@ -17,13 +17,6 @@ public class ResearcherRepositoryTest extends AbstractIntegrationTest {
     private ResearcherRepository repository;
 
     @Test
-    public void findByOrganisationAndOrganisationUid() {
-        Optional<Researcher> researcherOptional = repository
-            .findByOrganisationAndOrganisationUid("example.org", "mary.doe");
-        assertEquals("mary.doe@example.org", researcherOptional.get().getEmail());
-    }
-
-    @Test
     public void findByIdentitiesIdentityValueAndIdentitiesIdentityType() {
         List<Researcher> researchers = repository
             .findByIdentitiesIdentityValueAndIdentitiesIdentityType("https://orcid.org/0000-0002-3843-3472",
