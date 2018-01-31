@@ -1,0 +1,14 @@
+{
+  "identities": [
+    {
+      "identityValue": "987654321",
+      "identityType": "SCOPUS"
+    }
+  ],
+  "organisation": "example.org",
+  "organisationUid": "sam.doe",
+  "employeeType": "CURRENT",
+  "authoritative": true,
+  "name": "Mary2",
+  "email": "mary.doe@example.org"
+}

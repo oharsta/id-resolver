@@ -1,5 +1,6 @@
 package resolver.web;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.http.Header;
 import org.junit.Test;
 import resolver.AbstractIntegrationTest;
@@ -97,6 +98,8 @@ public class ResearcherControllerTest extends AbstractIntegrationTest {
         Researcher researcher = new Researcher(Identity.identities(singletonList("987654321"),
             singletonList(IdentityType.SCOPUS)), "example.org", "sam.doe",
             EmployeeType.CURRENT, Boolean.TRUE, "Mary2", "mary.doe@example.org");
+
+        System.out.println(new ObjectMapper().writeValueAsString(researcher));;
 
         ResearcherView researcherView = given()
             .auth().preemptive().basic("user", "secret")

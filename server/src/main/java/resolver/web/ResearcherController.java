@@ -62,6 +62,7 @@ public class ResearcherController {
     }
 
     @DeleteMapping("/researchers/{id}")
+    @Transactional
     public void deleteResearcherById(APIUser apiUser, @PathVariable("id") Long id) {
         ResearcherView researcherView = this.researcherById(apiUser, id);
         if (!apiUser.getOrganisation().equals(researcherView.getOrganisation())) {

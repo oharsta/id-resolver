@@ -79,5 +79,23 @@ curl --user user:secret http://localhost:8080/api/resolver/stats | python -m jso
 curl --user user:secret http://localhost:8080/client/users/me | python -m json.tool
 
 ```
-@TODO
-Example curl's for creation / updates and deletions of the researchers.
+To insert new researchers POST to the `api/resolver/researchers` endpoint:
+```
+curl --user user:secret -X POST -H "Content-Type: application/json" -d "@server/src/test/resources/researcher.json" "http://localhost:8080/api/resolver/researchers"  | python -m json.tool
+```
+To update a existing researcher make sure you PUT json with id's for the persistent object (e.g. researcher and identities):
+```
+curl --user user:secret -X PUT -H "Content-Type: application/json" -d "@server/src/test/resources/update-researcher.json" "http://localhost:8080/api/resolver/researchers"  | python -m json.tool
+```
+And finally delete a researcher:
+```
+curl --user user:secret -X DELETE "http://localhost:8080/api/resolver/researchers/1"
+curl --user user:secret "http://localhost:8080/api/resolver/researchers/1" | python -m json.tool
+{
+    "error": "Not Found",
+    "message": "Researcher with id 1 not found",
+    "path": "/api/resolver/researchers/1",
+    "status": 404,
+    "timestamp": "2018-01-31T14:16:36.474+0000"
+}
+```

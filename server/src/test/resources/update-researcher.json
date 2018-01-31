@@ -1,0 +1,17 @@
+{
+  "authoritative": true,
+  "email": "john.doe@example.org",
+  "employeeType": "CURRENT",
+  "id": 6,
+  "identities": [
+    {
+      "id": 8,
+      "identityType": "SCOPUS",
+      "identityValue": "987654321"
+    }
+  ],
+  "name": "Mary2",
+  "organisation": "example.org",
+  "organisationUid": "sam.doe",
+  "parents": []
+}
