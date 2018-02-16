@@ -1,0 +1,13 @@
+---
+
+- hosts: id-resolver
+  become: true
+  gather_facts: yes
+  roles:
+    - initial
+    - { role: httpd, tags: httpd }
+    - { role: java, tags: java }
+    - ssl
+    - { role: mysql, tags: mysql }
+    - { role: id-resolver-gui, tags: id-resolver-gui }
+    - { role: id-resolver-server, tags: id-resolver-server }

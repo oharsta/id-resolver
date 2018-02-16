@@ -1,0 +1,57 @@
+<VirtualHost *:443>
+    # General setup for the virtual host, inherited from global configuration
+    ServerName idresolver.lab.surf.nl:443
+
+    # Use separate log files for the SSL virtual host; note that LogLevel
+    # is not inherited from httpd.conf.
+    ErrorLog /var/log/httpd/id_resolver_ssl_error_log
+    TransferLog /var/log/httpd/id_resolver_ssl_access_log
+    LogLevel warn
+
+    RewriteEngine on
+
+    RewriteCond %{REQUEST_URI} !\.html$
+    RewriteCond %{REQUEST_URI} !\.js$
+    RewriteCond %{REQUEST_URI} !\.svg$
+    RewriteCond %{REQUEST_URI} !\.css$
+    RewriteCond %{REQUEST_URI} !\.png$
+    RewriteCond %{REQUEST_URI} !\.ico$
+    RewriteCond %{REQUEST_URI} !\.ttf$
+    RewriteCond %{REQUEST_URI} !\.woff$
+    RewriteCond %{REQUEST_URI} !api
+    RewriteCond %{REQUEST_URI} !client
+    RewriteCond %{REQUEST_URI} !fonts
+    RewriteRule (.*) /index.html [L]    RewriteRule (.*) /index.html [L]
+
+    SSLEngine             on
+    SSLProxyEngine        on
+    SSLProtocol           all -SSLv2 -SSLv3
+    SSLCipherSuite        ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA:ECDHE-RSA-AES128-SHA:DHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-SHA256:DHE-RSA-AES128-SHA256:DHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA:AES256-GCM-SHA384:AES128-GCM-SHA256:AES256-SHA256:AES128-SHA256:AES256-SHA:AES128-SHA:DES-CBC3-SHA
+    SSLCertificateFile /etc/letsencrypt/live/idresolver.lab.surf.nl/fullchain.pem
+    SSLCertificateKeyFile /etc/letsencrypt/live/idresolver.lab.surf.nl/privkey.pem
+#    SSLCertificateChainFile /etc/letsencrypt/live/idresolver.lab.surf.nl/chain.pem
+
+    Header set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+
+    SetEnvIf User-Agent ".*MSIE.*" \
+             nokeepalive ssl-unclean-shutdown \
+             downgrade-1.0 force-response-1.0
+
+    CustomLog /var/log/httpd/ssl_request_log \
+              "%t %h %{SSL_PROTOCOL}x %{SSL_CIPHER}x \"%r\" %b"
+
+    ProxyPreserveHost On
+    ProxyPass /api/resolver http://localhost:{{ server_port }}/api/resolver retry=0
+    ProxyPassReverse /api/resolver http://localhost:{{ server_port }}/api/resolver
+    ProxyPass /client http://localhost:{{ server_port }}/client retry=0
+    ProxyPassReverse /client http://localhost:{{ server_port }}/client
+
+    DocumentRoot /var/www/id-resolver/current
+
+    <Directory /var/www/dashboard/current>
+      Order       allow,deny
+      Allow       from all
+      Options     -Indexes
+    </Directory>
+
+</VirtualHost>

@@ -1,0 +1,26 @@
+#jinja2:lstrip_blocks: True
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true">
+
+  <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+
+  <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>/var/log/id-resolver/id-resolver.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <!-- daily rollover -->
+      <fileNamePattern>/var/log/id-resolver/id-resolver-%d{yyyy-MM-dd}.log.gz</fileNamePattern>
+        <maxHistory>30</maxHistory>
+    </rollingPolicy>
+    <encoder>
+      <pattern>%d{ISO8601} %5p [%t] %logger{40}:%L - %m%n</pattern>
+    </encoder>
+  </appender>
+
+  {% for logger in id_resolver_loggers %}
+  <logger name="{{ logger.name }}" level="{{ logger.level }}"/>
+  {% endfor %}
+
+  <root level="WARN">
+    <appender-ref ref="file" />
+  </root>
+</configuration>

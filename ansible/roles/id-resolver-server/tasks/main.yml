@@ -1,0 +1,123 @@
+---
+
+- name: install libhttp2 (needed by uri module)
+  pip: name=httplib2 state=present
+
+- name: create application group
+  group: name="{{ id_resolver_group }}" state=present
+
+- name: create appplication user
+  user:
+    name: "{{ id_resolver_user }}"
+    group: "{{ id_resolver_group }}"
+    home: "{{ id_resolver_dir }}"
+    shell: /sbin/nologin
+
+- name: create logging directory
+  file:
+    path: /var/log/id-resolver
+    state: directory
+    owner: "{{ id_resolver_user }}"
+    group: "{{ id_resolver_group }}"
+    mode: 0755
+
+- name: copy logging config
+  template:
+    src: logback.xml.j2
+    dest: "{{ id_resolver_dir }}/logback.xml"
+    owner: "{{ id_resolver_user }}"
+    group: "{{ id_resolver_group }}"
+    mode: 0640
+  tags: deploy
+  notify: restart id-resolver
+
+- name: copy users config
+  template:
+    src: id-resolver-api-users.yml.j2
+    dest: "{{ id_resolver_dir }}/logback.xml"
+    owner: "{{ id_resolver_user }}"
+    group: "{{ id_resolver_group }}"
+    mode: 0640
+  tags: deploy
+  notify: restart id-resolver
+
+- name: copy application properties
+  template:
+    src: application.yml.j2
+    dest: "{{ id_resolver_dir }}/application.yml"
+    owner: "{{ id_resolver_user }}"
+    group: "{{ id_resolver_group }}"
+    mode: 0400
+  tags: deploy
+  notify: restart id-resolver
+
+- name: copy application config
+  template:
+    src: id-resolver.j2
+    dest: "{{ id_resolver_dir }}/id-resolver.conf"
+    owner: root
+    group: root
+    mode: 0400
+  tags: deploy
+  notify: restart id-resolver
+
+- name: download id-resolver-server.war
+  maven_artifact:
+    group_id: org.openconext
+    artifact_id: id-resolver-server
+    extension: war
+    version: "{{ id_resolver_server_version }}"
+    repository_url: "{{ maven_snapshot_repo if 'SNAPSHOT' in selfservice_version else maven_repo }}"
+    dest: "{{ id_resolver_dir }}"
+  tags: deploy
+  register: maven_result
+
+- name: set ownership of application artifact
+  file: path={{ maven_result.dest }} owner={{ id_resolver_user }} group={{ id_resolver_group }} mode=0500
+  tags: deploy
+
+- name: change symlink to current version
+  file:
+    src: "{{ maven_result.dest }}"
+    dest: "{{ id_resolver_dir }}/id-resolver-server.war"
+    state: link
+    owner: "{{ id_resolver_user }}"
+    group: "{{ id_resolver_group }}"
+  tags: deploy
+  when: maven_result.changed
+
+- name: link application config
+  file:
+    src: "{{ id_resolver_dir }}/id-resolver.conf"
+    dest: "{{ id_resolver_dir }}/id-resolver-{{ maven_result.version }}.conf"
+    state: link
+  when: maven_result.changed
+  tags: deploy
+
+- name: link init.d service
+  file:
+    src: "{{ id_resolver_dir }}/id-resolver-server.war"
+    dest: /etc/init.d/id-resolver
+    force: yes
+    state: link
+  tags: deploy
+
+- name: restart id-resolver
+  service: name=id-resolver state=restarted
+  tags: deploy
+  when: maven_result.changed
+
+- name: wait for restart
+  uri:
+    url: http://localhost:{{ server_port }}/health
+    headers:
+      Accept: "application/json"
+  tags: deploy
+  register: health_result
+  until: health_result.status is defined and health_result.status == 200 and health_result.json.status == "UP"
+  retries: 15
+  delay: 5
+  when: maven_result.changed
+
+- name: ensure the service is started
+  service: name=id-resolver enabled=yes state=started

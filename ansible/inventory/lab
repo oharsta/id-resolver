@@ -1,0 +1,5 @@
+[id-resolver]
+idresolver.lab.surf.nl
+
+[id-resolver-lab:children]
+id-resolver

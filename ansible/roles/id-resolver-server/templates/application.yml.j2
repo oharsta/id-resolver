@@ -1,0 +1,38 @@
+logging:
+  config: file://{{ id_resolver_dir }}/logback.xml
+  level:
+    org.springframework: WARN
+    org.hibernate.SQL: WARN
+
+server:
+  port: {{ server_port }}
+  server-header: no
+  session:
+    timeout: 28800
+    cookie:
+      secure: true
+
+security:
+  api_users_config_path: file://{{ id_resolver_dir }}/id-resolver-api-users.yml
+
+spring:
+  jpa:
+    open-in-view: false
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: {{ id_resolver_mysql_url }}
+    username: id_resolver_rw
+    password: {{ id_resolver_mysql_password }}
+    validation-query: SELECT 1
+    testWhileIdle: true
+
+  main:
+    banner-mode: "off"
+  jackson:
+    default-property-inclusion: non_null
+
+# used by the git plugin
+info:
+  build:
+    artifact: "@project.artifactId@"
+    version: "@project.version@"

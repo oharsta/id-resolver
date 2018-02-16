@@ -1,0 +1,3 @@
+---
+- name: restart id-resolver
+  service: name=id-resolver state=restarted

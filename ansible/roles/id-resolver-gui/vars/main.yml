@@ -1,0 +1,3 @@
+---
+server_port: 9290
+id_resolver_current: /var/www/id-resolver/current
