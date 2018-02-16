@@ -13,7 +13,7 @@ spring:
   jpa:
     open-in-view: false
   datasource:
-    driver-class-name: org.mariadb.jdbc.Driver
+    driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql://localhost/id_resolver?autoReconnect=true&useSSL=false
     username: root
     password:
