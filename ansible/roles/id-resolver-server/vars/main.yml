@@ -1,9 +1,9 @@
 ---
 id_resolver_dir: /opt/id-resolver
-selfservice_artifact: id-resolver-server.war
-selfservice_heapsize: 512m
-selfservice_port: 9290
-selfservice_user: id-resolver
-selfservice_group: id-resolver
-selfservice_loggers:
+id_resolver_artifact: id-resolver-server.jar
+id_resolver_heapsize: 512m
+id_resolver_port: 9290
+id_resolver_user: id-resolver
+id_resolver_group: id-resolver
+id_resolver_loggers:
   - { name: "resolver", level: "DEBUG" }

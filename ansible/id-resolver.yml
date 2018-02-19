@@ -1,13 +1,23 @@
 ---
+- hosts: all
+  gather_facts: no
+  tasks:
+  - name: Read vars from secrets file
+    include_vars: "{{ secrets_file }}"
+    tags:
+      - always
 
 - hosts: id-resolver
   become: true
   gather_facts: yes
   roles:
+#    - role: geerlingguy.java
+#      when: "ansible_os_family == 'Debian'"
+#      java_packages:
+#        - openjdk-8-jdk
     - initial
     - { role: httpd, tags: httpd }
     - { role: java, tags: java }
-    - ssl
     - { role: mysql, tags: mysql }
     - { role: id-resolver-gui, tags: id-resolver-gui }
     - { role: id-resolver-server, tags: id-resolver-server }

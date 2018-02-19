@@ -4,7 +4,11 @@ logging:
     org.hibernate.SQL: WARN
 
 server:
-  server-header:
+  server-header: no
+  session:
+    timeout: "28800"
+    cookie:
+      secure: true
 
 security:
   api_users_config_path: classpath:/id-resolver-api-users.yml

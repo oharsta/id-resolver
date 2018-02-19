@@ -1,9 +1,9 @@
 ---
-- name: restart httpd
-  service: name=httpd state=restarted
+- name: restart apache2
+  service: name=apache2 state=restarted
 
-- name: reload httpd
-  service: name=httpd state=reloaded
+- name: reload apache2
+  service: name=apache2 state=reloaded
 
 - name: restart iptables
   service: name=iptables state=restarted

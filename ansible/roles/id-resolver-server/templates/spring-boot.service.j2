@@ -1,0 +1,17 @@
+### BEGIN INIT INFO
+# Required-Start:    $local_fs $network
+# Required-Stop:     $local_fs
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+### END INIT INFO
+[Unit]
+Description=id-resolver
+
+[Service]
+WorkingDirectory=/opt/id-resolver
+ExecStart=/usr/bin/java -Xms512m -Xmx512m -Djava.security.egd=file:///dev/urandom -jar id-resolver-server.jar
+User={{ id_resolver_user }}
+PrivateTmp=yes
+
+[Install]
+WantedBy=multi-user.target

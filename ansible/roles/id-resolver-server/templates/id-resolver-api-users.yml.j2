@@ -1,6 +1,6 @@
 # Valid scopes are resolver.api.Scope.values(); =>  ["READ", "WRITE"]
 apiUsers:
-  {% for user in manage.apiUsers %}
+  {% for user in id_resolver.apiUsers %}
   - {
       name: "{{ user.name }}",
       password: "{{ user.password }}",

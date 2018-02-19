@@ -10,3 +10,5 @@ build
 gui/dist
 gui/coverage
 *.css
+ansible/roles/geerlingguy*
+id-resolver.retry

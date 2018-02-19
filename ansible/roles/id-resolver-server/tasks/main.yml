@@ -34,7 +34,7 @@
 - name: copy users config
   template:
     src: id-resolver-api-users.yml.j2
-    dest: "{{ id_resolver_dir }}/logback.xml"
+    dest: "{{ id_resolver_dir }}/id-resolver-api-users.yml"
     owner: "{{ id_resolver_user }}"
     group: "{{ id_resolver_group }}"
     mode: 0640
@@ -51,23 +51,13 @@
   tags: deploy
   notify: restart id-resolver
 
-- name: copy application config
-  template:
-    src: id-resolver.j2
-    dest: "{{ id_resolver_dir }}/id-resolver.conf"
-    owner: root
-    group: root
-    mode: 0400
-  tags: deploy
-  notify: restart id-resolver
-
-- name: download id-resolver-server.war
+- name: download id-resolver-server.jar
   maven_artifact:
     group_id: org.openconext
     artifact_id: id-resolver-server
-    extension: war
+    extension: jar
     version: "{{ id_resolver_server_version }}"
-    repository_url: "{{ maven_snapshot_repo if 'SNAPSHOT' in selfservice_version else maven_repo }}"
+    repository_url: "{{ maven_snapshot_repo if 'SNAPSHOT' in id_resolver_server_version else maven_repo }}"
     dest: "{{ id_resolver_dir }}"
   tags: deploy
   register: maven_result
@@ -79,33 +69,21 @@
 - name: change symlink to current version
   file:
     src: "{{ maven_result.dest }}"
-    dest: "{{ id_resolver_dir }}/id-resolver-server.war"
+    dest: "{{ id_resolver_dir }}/id-resolver-server.jar"
     state: link
     owner: "{{ id_resolver_user }}"
     group: "{{ id_resolver_group }}"
   tags: deploy
   when: maven_result.changed
 
-- name: link application config
-  file:
-    src: "{{ id_resolver_dir }}/id-resolver.conf"
-    dest: "{{ id_resolver_dir }}/id-resolver-{{ maven_result.version }}.conf"
-    state: link
-  when: maven_result.changed
-  tags: deploy
-
-- name: link init.d service
-  file:
-    src: "{{ id_resolver_dir }}/id-resolver-server.war"
-    dest: /etc/init.d/id-resolver
-    force: yes
-    state: link
-  tags: deploy
+- name: Copy systemd service file
+  template: src=spring-boot.service.j2 dest=/etc/systemd/system/id-resolver.service
+  notify:
+    - "restart id-resolver"
 
 - name: restart id-resolver
-  service: name=id-resolver state=restarted
+  systemd: name=id-resolver state=restarted daemon_reload=yes
   tags: deploy
-  when: maven_result.changed
 
 - name: wait for restart
   uri:
@@ -120,4 +98,4 @@
   when: maven_result.changed
 
 - name: ensure the service is started
-  service: name=id-resolver enabled=yes state=started
+  systemd: name=id-resolver enabled=yes state=started
