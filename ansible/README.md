@@ -1,3 +1,6 @@
+cd ..
+git clone git@gitlab.surfnet.nl:oharsta/id-resolver-environment.git
+cd id-resolver/ansible
 ansible-galaxy install geerlingguy.java
 ansible-galaxy install geerlingguy.apache
 
