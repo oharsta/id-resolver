@@ -1,6 +1,6 @@
 logging:
   level:
-    org.springframework: WARN
+    org.springframework: DEBUG
     org.hibernate.SQL: WARN
 
 server:
@@ -8,7 +8,7 @@ server:
   session:
     timeout: "28800"
     cookie:
-      secure: true
+      secure: false
 
 security:
   api_users_config_path: classpath:/id-resolver-api-users.yml
