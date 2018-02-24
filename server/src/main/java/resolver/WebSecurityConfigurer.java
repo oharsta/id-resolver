@@ -18,8 +18,11 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.web.filter.CommonsRequestLoggingFilter;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.yaml.snakeyaml.Yaml;
 import resolver.api.APIAuthenticationManager;
 import resolver.api.APIUserConfiguration;
@@ -88,6 +91,19 @@ public class WebSecurityConfigurer {
         public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
             argumentResolvers.add(new APIUserHandlerMethodArgumentResolver());
         }
+
+        @Bean
+        public CommonsRequestLoggingFilter logFilter() {
+            CommonsRequestLoggingFilter filter
+                = new CommonsRequestLoggingFilter();
+            filter.setIncludeQueryString(true);
+            filter.setIncludePayload(true);
+            filter.setMaxPayloadLength(10000);
+            filter.setIncludeHeaders(false);
+            filter.setAfterMessagePrefix("REQUEST DATA : ");
+            return filter;
+        }
+
     }
 
     interface CommonWebSecurityConfigurerAdapter {

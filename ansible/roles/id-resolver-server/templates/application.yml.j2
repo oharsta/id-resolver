@@ -1,8 +1,9 @@
 logging:
   config: file://{{ id_resolver_dir }}/logback.xml
   level:
-    org.springframework: WARN
+    org.springframework.web.filter.CommonsRequestLoggingFilter: DEBUG
     org.hibernate.SQL: WARN
+    resolver: DEBUG
 
 server:
   port: {{ server_port }}
