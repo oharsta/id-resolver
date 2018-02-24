@@ -10,6 +10,8 @@
 - hosts: id-resolver
   become: true
   gather_facts: yes
+  vars_files:
+      - group_vars/id-resolver-lab.yml
   roles:
 #    - role: geerlingguy.java
 #      when: "ansible_os_family == 'Debian'"
@@ -19,5 +21,6 @@
     - { role: httpd, tags: httpd }
     - { role: java, tags: java }
     - { role: mysql, tags: mysql }
+    - { role: geerlingguy.apache, tags: apache }
     - { role: id-resolver-gui, tags: id-resolver-gui }
     - { role: id-resolver-server, tags: id-resolver-server }

@@ -1,6 +1,6 @@
 logging:
   level:
-    org.springframework: DEBUG
+    org.springframework: INFO
     org.hibernate.SQL: WARN
 
 server:

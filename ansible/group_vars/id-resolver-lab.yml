@@ -13,3 +13,28 @@ id_resolver:
         password: "{{ id_resolver_user_secret }}",
         scopes: ["READ", "WRITE"]
       }
+
+apache_listen_port: 443
+apache_create_vhosts: true
+apache_vhosts_filename: "id_resolver.conf"
+apache_vhosts_template: "templates/id_resolver.conf.j2"
+apache_remove_default_vhost: true
+apache_ignore_missing_ssl_certificate: false
+apache_mods_enabled:
+  - rewrite.load
+  - ssl.load
+  - rewrite.load
+  - mime.load
+  - proxy.load
+  - proxy_http.load
+
+apache_app_listen_address:
+  id_resolver: 145.101.124.16
+loadbalancing:
+  id_resolver:
+    port: 443
+tls:
+  cert_file: /etc/letsencrypt/live/idresolver.lab.surf.nl/fullchain.pem
+  cert_private_file: /etc/letsencrypt/live/idresolver.lab.surf.nl/privkey.pem
+  cert_chain_file: /etc/letsencrypt/live/idresolver.lab.surf.nl/chain.pem
+

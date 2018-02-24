@@ -12,7 +12,7 @@ I18n.translations.en = {
     header: {
         title: "Research ID resolver",
         links: {
-            help_html: "<a href=\"https://github.com/oharsta/id-resolver/wiki\" target=\"_blank\">Help</a>",
+            help_html: "<a href=\"https://github.com/oharsta/id-resolver/blob/master/README.md#testing\" target=\"_blank\">Help</a>",
             logout: "Logout",
             exit: "Exit"
         }

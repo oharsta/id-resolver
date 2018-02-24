@@ -1,17 +1,12 @@
 ---
 - name: create apache folder
-  file: path=/var/www/id-resolver owner=apache group=apache mode=2755 state=directory
-
-- name: copy virtual host config
-  template: src=id-resolver.conf.j2 dest=/etc/httpd/conf.d/id-resolver.conf
-  notify: restart httpd
-  tags: deploy
+  file: path=/var/www/id-resolver owner=www-data group=www-data mode=2755 state=directory
 
 - name: download html archive
   maven_artifact:
     group_id: org.openconext
     artifact_id: id-resolver-gui
-    extension: tar.gz
+    extension: zip
     version: "{{ id_resolver_gui_version }}"
     repository_url: "{{ maven_snapshot_repo if 'SNAPSHOT' in id_resolver_gui_version else maven_repo }}"
     dest: /var/www/id-resolver
@@ -23,17 +18,19 @@
     src: "{{ maven_result.dest }}"
     dest: /var/www/id-resolver
     copy: no
-    owner: root
-    group: apache
+    owner: www-data
+    group: www-data
   register: unarchive_result
   tags: deploy
   when: maven_result.changed
 
 - name: create symlink to downloaded version
   file:
-    src: "{{ unarchive_result.dest }}/id-resolver-{{ id_resolver_gui_version }}"
-    dest: "{{ dashboard_current }}"
+    src: "{{ unarchive_result.dest }}/id-resolver-gui-{{ id_resolver_gui_version }}"
+    dest: "{{ id_resolver_current }}"
     state: link
     force: yes
+    owner: www-data
+    group: www-data
   tags: deploy
   when: unarchive_result.changed

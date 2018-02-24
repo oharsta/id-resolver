@@ -1,0 +1,71 @@
+{% if apache_app_listen_address.id_resolver is defined %}
+Listen {{ apache_app_listen_address.id_resolver }}:{{ loadbalancing.id_resolver.port }}
+<Virtualhost {{ apache_app_listen_address.id_resolver }}:{{ loadbalancing.id_resolver.port }}>
+{% else %}
+<Virtualhost *:443 >
+{% endif %}
+    # General setup for the virtual host, inherited from global configuration
+    ServerName https://idresolver.lab.surf.nl
+
+    ErrorLog "|/usr/bin/logger -p local3.err  -t 'Apache-IdResolver'"
+    CustomLog "|/usr/bin/logger -p local3.info  -t 'Apache-IdResolver'" combined
+
+    RewriteEngine on
+
+    RewriteCond %{REQUEST_URI} !\.html$
+    RewriteCond %{REQUEST_URI} !\.js$
+    RewriteCond %{REQUEST_URI} !\.svg$
+    RewriteCond %{REQUEST_URI} !\.css$
+    RewriteCond %{REQUEST_URI} !\.png$
+    RewriteCond %{REQUEST_URI} !\.ico$
+    RewriteCond %{REQUEST_URI} !\.woff$
+    RewriteCond %{REQUEST_URI} !\.woff2$
+    RewriteCond %{REQUEST_URI} !\.ttf$
+    RewriteCond %{REQUEST_URI} !\.eot$
+    RewriteCond %{REQUEST_URI} !api
+    RewriteCond %{REQUEST_URI} !client
+    RewriteCond %{REQUEST_URI} !actuator
+    RewriteCond %{REQUEST_URI} !fonts
+    RewriteRule (.*) /index.html [L]
+
+    ProxyPass /api/resolver http://localhost:{{ id_resolver_port }}/api/resolver retry=0
+    ProxyPassReverse /api/resolver http://localhost:{{ id_resolver_port }}/api/resolver
+    ProxyPass /client http://localhost:{{ id_resolver_port }}/client retry=0
+    ProxyPassReverse /client http://localhost:{{ id_resolver_port }}/client
+
+    DocumentRoot /var/www/id-resolver/current
+
+    <Directory /var/www/id-resolver/current>
+      Order       allow,deny
+      Allow       from all
+      Options     -Indexes
+    </Directory>
+
+    # The internal API is secured with basic auth
+    <Location ~ "/api/resolver/">
+      allow from all
+      satisfy any
+    </Location>
+
+    # The internal API is secured with basic auth
+    <Location ~ "/client/">
+      allow from all
+      satisfy any
+    </Location>
+
+    <Location ~ "(.*)(eot|svg|ttf|woff2|woff|html|js|css|png|jpg|ico)$">
+      allow from all
+      satisfy any
+    </Location>
+
+    SSLEngine on
+    SSLCertificateFile      {{ tls.cert_file }}
+    SSLCertificateKeyFile   {{ tls.cert_private_file }}
+#    SSLCertificateChainFile {{ tls.cert_chain_file }}
+    SSLProtocol             all -SSLv3 -TLSv1 -TLSv1.1
+    SSLCipherSuite          ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256
+    SSLHonorCipherOrder     on
+    SSLCompression          off
+
+
+</VirtualHost>

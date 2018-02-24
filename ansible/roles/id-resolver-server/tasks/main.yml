@@ -87,7 +87,7 @@
 
 - name: wait for restart
   uri:
-    url: http://localhost:{{ server_port }}/health
+    url: http://localhost:{{ server_port }}/actuator/health
     headers:
       Accept: "application/json"
   tags: deploy

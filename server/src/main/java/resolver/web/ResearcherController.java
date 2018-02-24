@@ -66,7 +66,7 @@ public class ResearcherController {
     public void deleteResearcherById(APIUser apiUser, @PathVariable("id") Long id) {
         ResearcherView researcherView = this.researcherById(apiUser, id);
         if (!apiUser.getOrganisation().equals(researcherView.getOrganisation())) {
-            throw new NotAllowedException(String.format("Not allowd to Delete Research with organisation %s for " +
+            throw new NotAllowedException(String.format("Not allowed to Delete Research with organisation %s for " +
                 "user with organisation %s.", researcherView.getOrganisation(), apiUser.getOrganisation()));
         }
         researcherRepository.deleteById(id);
@@ -81,7 +81,7 @@ public class ResearcherController {
     @Transactional
     public ResearcherView newResearcher(APIUser apiUser, @Validated @RequestBody Researcher researcher) {
         if (!apiUser.getOrganisation().equals(researcher.getOrganisation())) {
-            throw new NotAllowedException(String.format("Not allowd to POST / PUT Research with organisation %s for " +
+            throw new NotAllowedException(String.format("Not allowed to POST / PUT Research with organisation %s for " +
                 "user with organisation %s.", researcher.getOrganisation(), apiUser.getOrganisation()));
         }
         researcher.getIdentities().forEach(identity -> identity.setResearcher(researcher));
@@ -147,6 +147,11 @@ public class ResearcherController {
     @PutMapping("/researchers")
     @Transactional
     public ResearcherView updateResearcher(APIUser apiUser, @Validated @RequestBody Researcher researcher) {
+        ResearcherView researcherView = this.researcherById(apiUser, researcher.getId());
+        if (!apiUser.getOrganisation().equals(researcherView.getOrganisation())) {
+            throw new NotAllowedException(String.format("Not allowed to Update Research with organisation %s for " +
+                "user with organisation %s.", researcherView.getOrganisation(), apiUser.getOrganisation()));
+        }
         //delete all existing relations and re-create them
         this.researcherChildRepository.deleteByParent(researcher);
         this.researcherParentRepository.deleteByChild(researcher);
