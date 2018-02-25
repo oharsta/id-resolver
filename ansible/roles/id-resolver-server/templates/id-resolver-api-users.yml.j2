@@ -4,6 +4,7 @@ apiUsers:
   - {
       name: "{{ user.name }}",
       password: "{{ user.password }}",
+      organisation: "{{ user.organisation }}",
       scopes: [ {{ user.scopes|join(', ') }} ]
     }
   {% endfor %}

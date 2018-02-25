@@ -11,6 +11,7 @@ id_resolver:
     - {
         name: "user",
         password: "{{ id_resolver_user_secret }}",
+        organisation: "example.org",
         scopes: ["READ", "WRITE"]
       }
 
