@@ -18,6 +18,12 @@ export default class Login extends React.PureComponent {
 
     componentDidMount = () => this.username.focus();
 
+    handleKeyPress = e => {
+        if (e.key === "Enter") {
+            this.login(e);
+        }
+    };
+
     login = e => {
         stop(e);
         const {username, password} = this.state;
@@ -37,7 +43,8 @@ export default class Login extends React.PureComponent {
                 <label htmlFor="username">{I18n.t("login.username")}</label>
                 <input ref={ref => this.username = ref} type="text" value={username} onChange={e => this.setState({"username": e.target.value})}/>
                 <label htmlFor="password">{I18n.t("login.password")}</label>
-                <input type="password" value={password} onChange={e => this.setState({"password": e.target.value})}/>
+                <input type="password" value={password} onChange={e => this.setState({"password": e.target.value})}
+                       onKeyPress={this.handleKeyPress}/>
                 {error && <em className="error">{"Wrong username or password"}</em>}
                 <section className="actions">
                     <button onClick={this.login} className="button blue">{I18n.t("login.signIn")}</button>
