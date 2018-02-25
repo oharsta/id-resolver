@@ -31,7 +31,7 @@ public class ApplicationTest {
 
         response = new RestTemplate().getForEntity("http://localhost:" + port + "/client/users/me", Map.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        System.out.println(response.getBody());
+        assertEquals("user", response.getBody().get("name"));
     }
 
     @Test
