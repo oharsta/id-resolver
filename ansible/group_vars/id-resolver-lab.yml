@@ -14,6 +14,48 @@ id_resolver:
         organisation: "example.org",
         scopes: ["READ", "WRITE"]
       }
+    - {
+        name: "groningen",
+        password: "{{ id_resolver_groningen_secret }}",
+        organisation: "example.org",
+        scopes: ["READ", "WRITE"]
+      }
+    - {
+        name: "herman",
+        password: "{{ id_resolver_herman_secret }}",
+        organisation: "herman",
+        scopes: ["READ", "WRITE"]
+      }
+    - {
+        name: "clifford",
+        password: "{{ id_resolver_clifford_secret }}",
+        organisation: "surfmarket",
+        scopes: ["READ", "WRITE"]
+      }
+    - {
+        name: "nick",
+        password: "{{ id_resolver_nick_secret }}",
+        organisation: "tue",
+        scopes: ["READ", "WRITE"]
+      }
+    - {
+        name: "peter",
+        password: "{{ id_resolver_peter_secret }}",
+        organisation: "lu",
+        scopes: ["READ", "WRITE"]
+      }
+    - {
+        name: "ivo",
+        password: "{{ id_resolver_ivo_secret }}",
+        organisation: "um",
+        scopes: ["READ", "WRITE"]
+      }
+    - {
+        name: "david",
+        password: "{{ id_resolver_david_secret }}",
+        organisation: "uu",
+        scopes: ["READ", "WRITE"]
+      }
 
 apache_listen_port: 443
 apache_create_vhosts: true
