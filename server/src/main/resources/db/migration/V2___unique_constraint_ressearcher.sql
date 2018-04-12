@@ -1,0 +1,1 @@
+ALTER TABLE researchers ADD CONSTRAINT organisation_organisation_uid_c UNIQUE (organisation, organisation_uid);
